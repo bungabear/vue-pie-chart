@@ -1,11 +1,11 @@
 <template>
-  <div :class="[name]" :id="id" v-if="series.length">
+  <div :class="[name]" :id="id" v-if="data.length">
     <div :class="[`${name}-title`]" v-html="title" v-if="title" />
     <div :class="[`${name}-container`]">
       <div :class="[`${name}-donut`]" v-if="donut" />
     </div>
     <ul v-if="legend">
-      <li v-for="(item, index) in series" :key="index">
+      <li v-for="(item, index) in data" :key="index">
         <span :style="{background: item.color}" /><span v-html="label(item)" />
       </li>
     </ul>
@@ -28,7 +28,9 @@
 
     #{{ id }} .{{ name }}-donut
     {
-      background: {{ parentBgColor }}
+      background: {{ parentBgColor }};
+      width: calc({{ size }} / 2.5);
+      height: calc({{ size }} / 2.5);
     }
     </vc-style>
   </div>
@@ -44,35 +46,10 @@ export default {
   },
   data () {
     return {
+      total: 0,
       name: 'vc-piechart',
       id: `vc-piechart-${uuid()}`,
       parentBgColor: null
-    }
-  },
-  computed: {
-    segments () {
-      let gradient = 0
-      let styles = this.series.map(
-        segment => `${segment.color} 0 ${(gradient += segment.value)}%`
-      )
-      return `conic-gradient(${styles.join(',')})`
-    }
-  },
-  mounted () {
-    const noColor = 'rgba(0, 0, 0, 0)'
-    const documentColor = this.getBgColor(document.body)
-    let parentBgColor = this.getBgColor(this.$el.parentNode)
-    if (parentBgColor === noColor) {
-      parentBgColor = documentColor === noColor ? '#fff' : documentColor
-    }
-    this.parentBgColor = parentBgColor
-  },
-  methods: {
-    label (item) {
-      return `${item.label} (${item.value})`
-    },
-    getBgColor (node) {
-      return window.getComputedStyle(node, null).getPropertyValue('background-color')
     }
   },
   props: {
@@ -81,7 +58,7 @@ export default {
       required: false,
       default: '256px'
     },
-    series: {
+    data: {
       type: Array,
       required: false,
       default: () => []
@@ -98,6 +75,79 @@ export default {
     donut: {
       type: Boolean,
       required: false
+    }
+  },
+  computed: {
+    /**
+     * Create the gradients for the segments
+     * @computed segments
+     * @return {string}
+     */
+    segments () {
+      let gradient = 0
+      let styles = this.data.map(
+        segment => `${segment.color} 0 ${(gradient += this.width(segment.value))}%`
+      )
+      return `conic-gradient(${styles.join(',')})`
+    }
+  },
+  mounted () {
+    this.onMounted()
+  },
+  methods: {
+    /**
+     * Mounted handler
+     * @method onMounted
+     * @return {void}
+     */
+    onMounted () {
+      const noColor = 'rgba(0, 0, 0, 0)'
+      const documentColor = this.getBgColor(document.body)
+      let parentBgColor = this.getBgColor(this.$el.parentNode)
+      this.getTotal()
+      if (parentBgColor === noColor) {
+        parentBgColor = documentColor === noColor ? '#fff' : documentColor
+      }
+      this.parentBgColor = parentBgColor
+    },
+    /**
+     * Return chart series width
+     * @method width
+     * @param {number} value [value=0]
+     * @return {number}
+     */
+    width (value = 0) {
+      return this.total === 0 ? 0 : Math.round(value * 100 / this.total)
+    },
+    /**
+     * Get chart totals
+     * @method getTotal
+     * @return {void}
+     */
+    getTotal () {
+      this.data.forEach(bar => {
+        this.total = this.total + bar.value
+      })
+    },
+    /**
+     * Create a label out of the item.label and item.value
+     * @method label
+     * @param {object} item
+     * @return {string}
+     */
+    label (item = null) {
+      if (item) {
+        return `${item.label} (${item.value})`
+      }
+    },
+    /**
+     * Get the computed CSS background color of an Element
+     * @method label
+     * @param {Element} node
+     * @return {string}
+     */
+    getBgColor (node) {
+      return window.getComputedStyle(node, null).getPropertyValue('background-color')
     }
   }
 }
@@ -145,8 +195,6 @@ export default {
 
 .vc-piechart .vc-piechart-container .vc-piechart-donut
 {
-  width: 40%;
-  height: 40%;
   position: absolute;
   background: #fff;
   top: 50%;

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <vc-piechart :series="series1" size="256px" :legend="true" title="Chart 1" :donut="true" />
-    <vc-piechart :series="series2" size="12em" :legend="true"  title="Chart 2" :donut="true" />
+    <vc-piechart :data="data1" size="256px" :legend="true" title="Chart 1" :donut="true" />
+    <vc-piechart :data="data2" size="12em" :legend="true"  title="Chart 2" :donut="true" />
   </div>
 </template>
 <script>
@@ -14,22 +14,22 @@ export default {
   },
   data () {
     return {
-      series1: [{
+      data1: [{
         color: '#f44336',
-        value: 40,
+        value: 100,
         label: 'Red'
       }, {
         color: '#ff9800',
-        value: 30,
+        value: 123,
         label: 'Orange'
       }, {
         color: '#4caf50',
-        value: 30,
+        value: 456,
         label: 'Green'
       }],
-      series2: [{
+      data2: [{
         color: '#f44336',
-        value: 25,
+        value: 12,
         label: 'Red'
       }, {
         color: '#ff9800',
