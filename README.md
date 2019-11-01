@@ -1,6 +1,42 @@
 # vc-piechart
 
-> A VueJS pie/donut chart component, utilizing CSS conic gradients with mininal markup and calculations
+> Pie and donut chart component for [VueJs](https://vuejs.org/) based on CSS3 conic gradients, created by [Martin Ivanov](https://wemakesites.net).
+
+## Demo
+
+https://vc-piechart.wemakesites.net
+
+## Installation
+
+``
+$ npm i vc-piechart --save
+``
+
+## Usage
+
+```
+// in main.js, use globally
+import VcPiechart from 'vc-piechart'
+Vue.use(VcPiechart)
+
+// as a component in another component
+import VcPiechart from 'vc-piechart'
+
+export default {
+  name: 'app',
+  components: {
+    VcPiechart
+  }
+}
+```
+
+```
+<vc-piechart :data="data1" />
+```
+
+```
+<vc-piechart :data="data2" size="12em" :legend="true"  title="Chart 2" :donut="true" :flat="false" />
+```
 
 ## Props
 
@@ -29,6 +65,10 @@
  - title (String): optional chart title (default: null)
  - donut (Boolean): toggle the donut mode (default: false)
  - flat (Boolean): toggle chart's drop-shadow (default: false)
+
+## Repo
+
+https://bitbucket.org/acidmartin/vc-piechart/
 
 ## Build Setup
 

@@ -14,6 +14,24 @@
         </div>
       </div>
     </div>
+    <h2>Installation</h2>
+    <pre><code>$ npm i vc-piechart --save</code></pre>
+    <h2>Usage</h2>
+    <pre><code>// in main.js, use globally
+import VcPiechart from 'vc-piechart'
+Vue.use(VcPiechart)
+
+// as a component in another component
+import VcPiechart from 'vc-piechart'
+
+export default {
+  name: 'app',
+  components: {
+    VcPiechart
+  }
+}</code></pre>
+    <pre><code>&lt;vc-piechart :data="data1" /&gt;</code></pre>
+    <pre><code>&lt;vc-piechart :data="data2" size="12em" :legend="true"  title="Chart 2" :donut="true" :flat="false" /&gt;</code></pre>
     <h2>Props</h2>
     <ul>
       <li><code>data (Array)</code>: chart data (default: <code>[]</code>):<pre><code>{{ data1 }}</code></pre></li>
