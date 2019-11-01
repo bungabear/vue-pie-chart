@@ -1,6 +1,34 @@
 # vc-piechart
 
-> A Vue.js project
+> A VueJS pie/donut chart component, utilizing CSS conic gradients with mininal markup and calculations
+
+## Props
+
+ - data (Array): chart data (default: []):
+ ```javascript
+[
+  {
+    "color": "#f44336",
+    "value": 100,
+    "label": "Red"
+  },
+  {
+    "color": "#ff9800",
+    "value": 123,
+    "label": "Orange"
+  },
+  {
+    "color": "#4caf50",
+    "value": 456,
+    "label": "Green"
+  }
+]
+```
+ - size (String): chart's height and width in px, em, etc. default: 256px
+ - legend (Boolean): toggle chart's legend element (default: true)
+ - title (String): optional chart title (default: null)
+ - donut (Boolean): toggle the donut mode (default: false)
+ - flat (Boolean): toggle chart's drop-shadow (default: false)
 
 ## Build Setup
 
@@ -28,3 +56,7 @@ npm test
 ```
 
 For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+## Credits
+
+Created by [Martin Ivanov](https://wemakesites.net).
