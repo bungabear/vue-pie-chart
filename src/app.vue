@@ -1,11 +1,36 @@
 <template>
   <div id="app">
-    <vc-piechart :data="data1" size="256px" :legend="true" title="Chart 1" :donut="true" />
-    <vc-piechart :data="data2" size="12em" :legend="true"  title="Chart 2" :donut="true" />
+    <h1 v-html="name" />
+    <p v-html="description" />
+    <div :class="['table-layout']">
+      <div>
+        <div>
+          <h2>Default</h2>
+          <vc-piechart :data="data1" />
+        </div>
+        <div>
+          <h2>Customized Via Props</h2>
+          <vc-piechart :data="data2" size="12em" :legend="true"  title="Chart 2" :donut="true" :flat="false" />
+        </div>
+      </div>
+    </div>
+    <h2>Props</h2>
+    <ul>
+      <li><code>data (Array)</code>: chart data (default: <code>[]</code>):<pre><code>{{ data1 }}</code></pre></li>
+      <li><code>size (String)</code>: chart's height and width in <code>px</code>, <code>em</code>, etc. default: <code>256px</code></li>
+      <li><code>legend (Boolean)</code>: toggle chart's legend element (default: <code>true</code>)</li>
+      <li><code>title (String)</code>: optional chart title (default: <code>null</code>)</li>
+      <li><code>donut (Boolean)</code>: toggle the donut mode (default: <code>false</code>)</li>
+      <li><code>flat (Boolean)</code>: toggle chart's drop-shadow (default: <code>false</code>)</li>
+    </ul>
+    <p>Version {{ version }} developed by <a href="https://wemakesites.net/" target="_blank">Martin Ivanov</a> and available on
+      <a href="https://bitbucket.org/acidmartin/vc-piechart/" target="_blank">BitBucket</a> and
+      <a href="https://www.npmjs.com/package/vc-piechart" target="_blank">NPM</a>.</p>
   </div>
 </template>
 <script>
 import VcPiechart from './components/vc-piechart/piechart'
+import {name, description, version} from '../package'
 
 export default {
   name: 'app',
@@ -14,6 +39,9 @@ export default {
   },
   data () {
     return {
+      name,
+      version,
+      description,
       data1: [{
         color: '#f44336',
         value: 100,
@@ -48,3 +76,27 @@ export default {
   }
 }
 </script>
+<style>
+body
+{
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  color: #303030;
+}
+
+.table-layout
+{
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.table-layout > *
+{
+  display: table-row;
+}
+
+.table-layout > * > *
+{
+  display: table-cell;
+}
+</style>

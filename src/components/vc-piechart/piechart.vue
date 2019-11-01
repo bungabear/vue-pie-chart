@@ -1,10 +1,10 @@
 <template>
-  <div :class="[name]" :id="id" v-if="data.length">
+  <div :class="[name, flat ? `${name}-flat` : null]" :id="id" v-if="data.length">
     <div :class="[`${name}-title`]" v-html="title" v-if="title" />
     <div :class="[`${name}-container`]">
       <div :class="[`${name}-donut`]" v-if="donut" />
     </div>
-    <ul v-if="legend">
+    <ul v-if="legend" :class="[`${name}-legend`]">
       <li v-for="(item, index) in data" :key="index">
         <span :style="{background: item.color}" /><span v-html="label(item)" />
       </li>
@@ -53,26 +53,53 @@ export default {
     }
   },
   props: {
+    /**
+     * Width and height of the chart in px, em, percentage, etc.
+     */
     size: {
       type: String,
       required: false,
       default: '256px'
     },
+    /**
+     * Chart data array
+     * [{
+     *  color: String,
+     *  value: Number,
+     *  label: String
+     * }]
+     */
     data: {
       type: Array,
       required: false,
       default: () => []
     },
+    /**
+     * Toggle the chart legend
+     */
     legend: {
       type: Boolean,
       required: false,
       default: true
     },
+    /**
+     * Optional chart title
+     */
     title: {
       type: String,
       required: false
     },
+    /**
+     * Toggle donut mode
+     */
     donut: {
+      type: Boolean,
+      required: false
+    },
+    /**
+     * Toggle the chart drop shadow
+     */
+    flat: {
       type: Boolean,
       required: false
     }
@@ -86,7 +113,7 @@ export default {
     segments () {
       let gradient = 0
       let styles = this.data.map(
-        segment => `${segment.color} 0 ${(gradient += this.width(segment.value))}%`
+        segment => `${segment.color} 0 ${(gradient += this.slice(segment.value))}%`
       )
       return `conic-gradient(${styles.join(',')})`
     }
@@ -102,29 +129,29 @@ export default {
      */
     onMounted () {
       const noColor = 'rgba(0, 0, 0, 0)'
-      const documentColor = this.getBgColor(document.body)
-      let parentBgColor = this.getBgColor(this.$el.parentNode)
-      this.getTotal()
+      const documentColor = this.getNodeCssPropertyValue()
+      let parentBgColor = this.getNodeCssPropertyValue(this.$el.parentNode)
+      this.setChartTotal()
       if (parentBgColor === noColor) {
         parentBgColor = documentColor === noColor ? '#fff' : documentColor
       }
       this.parentBgColor = parentBgColor
     },
     /**
-     * Return chart series width
-     * @method width
+     * Return chart series slice
+     * @method slice
      * @param {number} value [value=0]
      * @return {number}
      */
-    width (value = 0) {
+    slice (value = 0) {
       return this.total === 0 ? 0 : Math.round(value * 100 / this.total)
     },
     /**
      * Get chart totals
-     * @method getTotal
+     * @method setChartTotal
      * @return {void}
      */
-    getTotal () {
+    setChartTotal () {
       this.data.forEach(bar => {
         this.total = this.total + bar.value
       })
@@ -141,13 +168,14 @@ export default {
       }
     },
     /**
-     * Get the computed CSS background color of an Element
-     * @method label
-     * @param {Element} node
+     * Get a computed CSS property value from an element
+     * @method getNodeCssPropertyValue
+     * @param {Element} node [node=document.body]
+     * @param {string} property [property='background-color']
      * @return {string}
      */
-    getBgColor (node) {
-      return window.getComputedStyle(node, null).getPropertyValue('background-color')
+    getNodeCssPropertyValue (node = document.body, property = 'background-color') {
+      return window.getComputedStyle(node, null).getPropertyValue(property)
     }
   }
 }
@@ -185,12 +213,28 @@ export default {
   font-size: .8em;
 }
 
-.vc-piechart .vc-piechart-container
+.vc-piechart:not(.vc-piechart-flat) .vc-piechart-container
 {
   box-shadow: 0 2px 4px -1px rgba(0, 0, 0, .2),
     0 4px 5px 0 rgba(0, 0, 0, .14),
     0 1px 10px 0 rgba(0, 0, 0, .12);
+}
+
+.vc-piechart:not(.vc-piechart-flat) .vc-piechart-container .vc-piechart-donut
+{
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, .2) inset,
+    0 4px 5px 0 rgba(0, 0, 0, .14) inset,
+    0 1px 10px 0 rgba(0, 0, 0, .12) inset;
+}
+
+.vc-piechart .vc-piechart-container
+{
   position: relative;
+}
+
+.vc-piechart ul
+{
+  margin: 1em 0 0;
 }
 
 .vc-piechart .vc-piechart-container .vc-piechart-donut
@@ -200,9 +244,6 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, .2) inset,
-    0 4px 5px 0 rgba(0, 0, 0, .14) inset,
-    0 1px 10px 0 rgba(0, 0, 0, .12) inset;
 }
 
 .vc-piechart
