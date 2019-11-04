@@ -1,7 +1,7 @@
 {
   "name": "vc-piechart",
-  "version": "1.0.2",
-  "description": "A VueJS pie and donut chart component, utilizing CSS3 conic gradients with mininal markup and calculations created by Martin Ivanov",
+  "version": "1.0.4",
+  "description": "A VueJS pie and donut chart component, utilizing CSS3 conic gradients with minimal markup and calculations created by Martin Ivanov",
   "author": "Martin Ivanov <acid_martin@yahoo.com>",
   "main": "dist/lib/vc-piechart.min.js",
   "private": false,
@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "uuid": "^3.3.3",
+    "vc-social-bar": "^1.0.1",
     "vue": "^2.3.3"
   },
   "devDependencies": {

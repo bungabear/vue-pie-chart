@@ -44,21 +44,27 @@ export default {
     <p>Version {{ version }} developed by <a href="https://wemakesites.net/" target="_blank">Martin Ivanov</a> and available on
       <a href="https://bitbucket.org/acidmartin/vc-piechart/" target="_blank">BitBucket</a> and
       <a href="https://www.npmjs.com/package/vc-piechart" target="_blank">NPM</a>.</p>
+    <vc-social-bar :title="name" position="right" :services="services" />
   </div>
 </template>
 <script>
 import VcPiechart from './components/vc-piechart/piechart'
 import {name, description, version} from '../package'
+import VcSocialBar from 'vc-social-bar'
+import services from './helpers/vc-social-bar-services'
+import 'vc-social-bar/dist/lib/vc-social-bar.min.css'
 
 export default {
   name: 'app',
   components: {
-    VcPiechart
+    VcPiechart,
+    VcSocialBar
   },
   data () {
     return {
       name,
       version,
+      services,
       description,
       data1: [{
         color: '#f44336',
