@@ -19,10 +19,12 @@
     <h2>Usage</h2>
     <pre><code>// in main.js, use globally
 import VcPiechart from 'vc-piechart'
+import 'vc-piechart/dist/lib/vc-piechart.min.css'
 Vue.use(VcPiechart)
 
 // as a component in another component
 import VcPiechart from 'vc-piechart'
+import 'vc-piechart/dist/lib/vc-piechart.min.css'
 
 export default {
   name: 'app',
