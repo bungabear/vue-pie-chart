@@ -29,8 +29,8 @@
     #{{ id }} .{{ name }}-donut
     {
       background: {{ parentBgColor }};
-      width: calc({{ size }} / 2.5);
-      height: calc({{ size }} / 2.5);
+      width: calc({{ size }} * {{donutSize}});
+      height: calc({{ size }} * {{donutSize}});
     }
     </vc-style>
   </div>
@@ -95,6 +95,14 @@ export default {
     donut: {
       type: Boolean,
       required: false
+    },
+    /**
+     * Toggle donut mode
+     */
+    donutSize: {
+      type: Number,
+      required: false,
+      default: 0.4
     },
     /**
      * Toggle the chart drop shadow

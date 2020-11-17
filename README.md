@@ -37,7 +37,7 @@ export default {
 ```
 
 ```
-<vc-piechart :data="data2" size="12em" :legend="true"  title="Chart 2" :donut="true" :flat="false" />
+<vc-piechart :data="data2" size="12em" :legend="true"  title="Chart 2" :donut="true" :donutSize="0.4" :flat="false" />
 ```
 
 ## Props
